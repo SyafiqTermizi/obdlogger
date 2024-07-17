@@ -1,14 +1,22 @@
+import logging
 import os
 import time
 
 import obd
 from dotenv import load_dotenv
 
+logger = logging.getLogger(__name__)
+
 
 def get_connection():
+    port = os.environ.get("OBD_PORT", "")
+    baud = os.environ.get("OBD_BAUD_RATE", "")
+
+    logger.info(f"Using parameter {port} {baud}")
+
     return obd.Async(
-        portstr=os.environ.get("OBD_PORT", ""),
-        baudrate=os.environ.get("OBD_BAUD_RATE", ""),
+        portstr=port,
+        baudrate=baud,
     )
 
 
@@ -35,14 +43,17 @@ def log_throttle(val):
 if __name__ == "__main__":
     load_dotenv()
 
+    logger.info("Initializing connection...")
     connection = get_connection()
+    logger.info("Connected to OBD 2!")
+
     connection.watch(obd.commands.COOLANT_TEMP)
     connection.watch(obd.commands.RPM)
     connection.watch(obd.commands.SPEED)
     connection.watch(obd.commands.THROTTLE_POS)
 
     try:
-        connection.start()  # start the async update loop
+        connection.start()
     except KeyboardInterrupt:
         connection.stop()
         connection.unwatch_all()
