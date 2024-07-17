@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "leepass"
+version = "0.1.0"
+description = "Car monitoring"
+authors = ["Syafiq Termizi <73152242+SyafiqTermizi2010@users.noreply.github.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+obd = "^0.7.2"
+python-dotenv = "^1.0.1"
+
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.5.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
